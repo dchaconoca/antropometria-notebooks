@@ -1,0 +1,8 @@
+altair==5.0.1
+kmodes==0.12.2
+matplotlib==3.7.2
+numpy==1.23.5
+pandas==2.0.3
+pandas-profiling==3.6.6
+scikit-learn==1.3.0
+seaborn==0.12.2
