@@ -1,57 +1,9 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # Estudio grasa corporal y obesidad
-# 
-
-# ## Lectura, limpieza, transformación y cálculo
-# 
-# 1. Leemos el archivo
-# 2. Limpiamos y eliminamos los datos erróneos
-# 3. Seleccionamos los datos que nos interesan
-# 4. Calculamos algunas variables necesarias para el estudio
-# 5. Guardamos el resultado en un archivo parquet para la continuación del estudio
-
-# ### Estudio Obesidad
-# 
-# 1. Clasificación de obesidad según el BMI:
-# 
-# - Bajo peso (0): BMI < 18.5 
-# - Peso normal (1): 18.5 ≤ BMI < 25
-# - Sobrepeso (2): 25 ≤ BMI < 30
-# - Obesidad (3): BMI ≥ 30
-# 
-# 2. Clasificación de riesgo de enfermedades no transmisibles y obesidad según la circunferencia de cintura (CC)
-# 
-# - Si masculino y CC > 94 cm -> Obesidad
-# - Si femenino y CC > 80 cm -> Obesidad
-# 
-# 3. Clasificación de riesgo de enfermedades no transmisibles según el racio circunferencia de cintura y circunferencia de cadera (RCC)
-# 
-# |Riesgo|Femenino|Masculino|
-# |------|---------|--------|
-# |Bajo| < 0.8 | < 0.95|
-# |Medio|0.81 - 0.85 |0.96 - 1 |
-# |Alto| > 0.86| > 1|
-# 
-# 4. Clasificación de riesgo sobrepeso y riesgo de enfermedades no transmisibles según racio circunferencia cintura y talla (ICT):
-# 
-# **ESTO LO CAMBIÉ EN EL CÓDIGO PARA DISMINUIR CATEGORÍAS**
-# 
-# |Riesgo|Femenino|Masculino|
-# |------|---------|--------|
-# |Muy delgado| < 0.34 | < 0.34|
-# |Delgado sano|0.35 - 0.41 |0.35 - 0.42 |
-# |Sano| 0.42 - 0.48| 0.43 - 0.52|
-# |Sobrepeso| 0.49 - 0.53 | 0.53 - 0.57|
-# |Sobrepeso elevado| 0.54 - 0.57| 0.58 a 0.62|
-# |Obesidad mórbidad| > 0.58| > 0.63|
-# 
-# 
-# 
-
-# In[1]:
-
+########################################
+# Calcula las variables necesarias al
+# estudio de la obesidad.
+# Código del notebook 1: Transformación de 
+# los datos y cálculo de variables
+########################################
 
 # Librerías
 
@@ -64,43 +16,9 @@ import numpy as np
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import FeatureUnion, Pipeline
 
+# Funciones propias
+import data_common_functions as dcf
 
-# In[2]:
-
-
-def read_file(file, sep=','):
-    
-    df = pd.DataFrame()
-      
-    file_type = file[file.index('.') - len(file) + 1:]
-       
-    if (file_type == 'csv'):
-        df = pd.read_csv(file, sep=sep)
-    elif (file_type == 'parquet'):
-        df = pd.read_parquet(file, engine='fastparquet')
-    elif (file_type == 'xlsx' or file_type == 'xls'):
-        df = pd.read_excel(file)
-
-    return df
-
-
-# In[3]:
-
-
-# Seleccionar solo las columnas necesarias 
-
-def select_data(df, col_drop=[], col_leave=[]):
-     
-    if col_leave:
-        df = df.loc[:,col_leave]
-    
-    if col_drop:
-        df.drop(col_drop, axis=1, inplace=True)
-    
-    return df
-
-
-# In[4]:
 
 
 # Clasificación según BMI: Body Mass Index (Índice de Masa Corporal)
@@ -125,8 +43,6 @@ def calc_obesity_bmi_txt(bmi):
     
 
 
-# In[5]:
-
 
 # Clasificación según CC: Circunferencia de cadera
 
@@ -141,8 +57,6 @@ def calc_obesity_cc_txt(cc):
     if cc == 0: return '0-Bajo'
     if cc == 1 : return '1-Alto'
 
-
-# In[6]:
 
 
 # Clasificación según RCC: Racio entre la circunferencia de la cintura y el de la cadera
@@ -164,9 +78,6 @@ def calc_obesity_rcc_txt(rcc):
     if rcc == 1: return '1-Medio'
     if rcc == 2: return '2-Alto'
     
-
-
-# In[7]:
 
 
 # Clasificación ICT: Índice o racio de circunferencia de cintura y talla (estatura)
@@ -192,10 +103,6 @@ def calc_obesity_ict_txt(ict):
     if ict == 3 : return '3-Obesidad'
            
 
-
-# In[8]:
-
-
 # Cuántos factores de riesgo posee una persona
 
 def calc_risk_factors(bmi, cc, rcc, ict):  
@@ -210,11 +117,6 @@ def calc_risk_factors(bmi, cc, rcc, ict):
     return total
 
     
-
-
-# In[9]:
-
-
 # Transforma los datos del dataset, 
 # en particular pasa las medidas de pulgadas a cm
 # y de libras a Kg
@@ -236,10 +138,6 @@ def custom_transformations(df):
     df['weight'] = df.apply(lambda  row: row['weight'] * 0.454, axis=1)
 
     return df
-
-
-# In[10]:
-
 
 # Calcula nuevas variables para el dataset
 
@@ -279,8 +177,6 @@ def custom_calculus(df):
     
     return df
 
-# In[11]:
-
 
 # Permite hacer transformaciones y cálculos personalizados al subconjunto de datos
 # Es un pipeline que llama 2 funciones custom_transformations y custom_calculus
@@ -294,92 +190,4 @@ def transform_calcul(df):
 
     # Aplicar el pipeline al conjunto de datos
     return custom_transformations_pipeline.fit_transform(df)
-
-
-# In[12]:
-
-
-# Esta función puede ser utilizada para extraer un subconjunto de datos del dataset original
-# Parámetros:
-#   columns_to_drop: Lista de columnas que se quiere borrar (cuando se desea conservar la mayoría)
-#   columns_to_leave: Lista de columnas que se quiere conservar
-#   transform: Boolean que indica si se va o no ejecutar la función transform_calculEs
-
-def load_clean_transform(columns_to_drop, columns_to_leave, transform=True):
-    
-    # Leemos el archivo
-    CURRENT_DIR = Path.cwd()
-    
-    BASE_DIR = Path(CURRENT_DIR).parent
-
-    file = f"{BASE_DIR}/data/in/caesar.csv"
-
-    df = read_file(file, ',')
-
-    # Limpiamos y eliminamos los datos erróneos
-    
-    # Borramos la primera línea que no contiene datos significativos
-    df.drop([0], axis=0, inplace=True)
-    
-    # Seleccionamos las variables que nos interesan
-    # Esta función debería hacer un select en la BD para traer lo que nos interesa
-    # según el problema que estamos tratando
-    df = select_data(df, columns_to_drop, columns_to_leave)
-
-    # Si la cantidad de registros con valores nulos es menos de 1% los eliminamos
-    nul_vals = df[ df.isnull().values ]['gender'].count() / df['gender'].count()
-
-    if nul_vals <= 0.01: df.dropna(inplace=True)
-        
-    if transform:
-        df = transform_calcul(df)
-    
-    # Guardamos el resultado en un archivo parquet para el resto del estudio
-    
-    df.to_parquet(f"{BASE_DIR}/data/out/obesity.parquet", 
-                    compression='GZIP',
-                    engine='pyarrow')
-    
-    return df
-
-
-# ## Main
-
-# In[13]:
-
-
-columns_to_drop = []
-columns_to_leave = [
- 'age',
- 'age_range',
- 'gender',
- 'height',
- 'weight',
- 'waist_circum_preferred',
- 'hip_circum'
-]
-
-df_obesity = load_clean_transform(columns_to_drop, columns_to_leave, True)
-
-
-# In[14]:
-
-
-df_obesity
-
-
-# In[15]:
-
-
-df_obesity.info()
-
-
-# In[16]:
-
-
-df_obesity.describe()
-
-
-
-
 
