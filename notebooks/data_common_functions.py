@@ -2,19 +2,40 @@
 ## Common Functions
 #################################
 
-# Transformar columnas
+# Transform columns
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, RobustScaler, LabelBinarizer, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
 
-# Armando pipelines
+# Pipelines
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import FeatureUnion, Pipeline
 
 from pathlib import Path
 
+import pandas as pd
+
 
 #################################
+
+# Read a file according to type
+
+def read_file(file, sep=','):
+    
+    df = pd.DataFrame()
+      
+    file_type = file[file.index('.') - len(file) + 1:]
+       
+    if (file_type == 'csv'):
+        df = pd.read_csv(file, sep=sep)
+    elif (file_type == 'parquet'):
+        df = pd.read_parquet(file, engine='fastparquet')
+    elif (file_type == 'xlsx' or file_type == 'xls'):
+        df = pd.read_excel(file)
+
+    return df
+
+
 
 # Select columns of a dataframe
 # Returns a dataset only with the selected columns

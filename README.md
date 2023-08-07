@@ -1,40 +1,77 @@
-# Estudio de las Ventas de una Ferretería
+# # Estudio de las Medidas Antropométricas para determinar el riesgo de obesidad y ENT
 
->Autor: Diana Chacón Ocariz
-
-## Contexto:
-
-Se trata de estudiar las ventas de una pequeña ferretería a partir del 01/01/2020.
-
-Esta empresa maneja un poco más de 3.000 productos distintos. Poseen un software de gestión genérico que les provee una gran cantidad de reportes, básicamente tablas con números, díficiles de analizar (un reporte puede constar de varias decenas de páginas).
-
-Por otro lado, los montos manejados están en Bs (Bolívares, moneda nacional venezolana). Durante el período de estudio, las grandes tasas de inflación, además de un cambio de moneda (eliminación de 6 ceros), dificultan el análisis. Por eso ha sido necesario transformar los montos a dólares según la tasa del día.
+>Autora: Diana Chacón Ocariz
 
 
-## Objetivos del negocio:
+##  Estudio del sobrepeso y la obesidad y su incidencia en las ENT:
 
-**Tener más visibilidad sobre las ventas para poder mejorar el proceso de compras y la toma de decisiones en general:** 
+La obesidad y el sobrepeso son condiciones de salud que han alcanzado proporciones epidémicas a nivel mundial, siendo un factor determinante en el desarrollo de diversas enfermedades no transmisibles (ENT). Estas condiciones se caracterizan por un exceso de grasa corporal, lo que puede tener consecuencias significativas para la salud a largo plazo.
 
-    - Analizar objetivamente las ventas.
-    - Identificar los productos más vendidos y que no pueden faltar (productos indispensables).
-    - Determinar los productos que podrían entrar en rotura de stock al final de un período.
-    - Predecir las ventas futuras.
+El sobrepeso y la obesidad aumentan sustancialmente el riesgo de padecer enfermedades crónicas, como la diabetes tipo 2, la hipertensión y las enfermedades cardiovasculares. Estas afecciones pueden tener un impacto negativo en la calidad de vida, aumentando la morbilidad y la mortalidad en las poblaciones afectadas.
+
+Para evaluar y cuantificar el grado de sobrepeso y obesidad, se utilizan medidas antropométricas clave:
+
+1. **Índice de Masa Corporal (IMC):** Relaciona el peso y la altura de una persona. Sin embargo, es importante señalar que el IMC no distingue entre masa muscular y grasa, por lo que puede haber limitaciones en su interpretación, especialmente en atletas o personas con una distribución de grasa atípica.
+
+2. **Relación cintura-cadera (RCC) y la relación cintura-talla (RCT):** Estos indicadores ofrecen una perspectiva más completa sobre la distribución de la grasa corporal. Una acumulación excesiva de grasa en la región abdominal, medida mediante el **contorno de cintura**, está particularmente asociada con un mayor riesgo de enfermedades metabólicas y cardiovasculares. Un contorno de cintura elevado puede indicar la presencia de grasa visceral, que se asocia con inflamación y otros procesos patológicos.
+
+3. **La edad y el sexo:** A medida que las personas envejecen, es común experimentar cambios en el metabolismo y en la composición corporal, lo que puede influir en la tendencia a ganar peso. Además, existe evidencia de que las tasas de obesidad varían según el género, con diferencias en la distribución de grasa y en las respuestas hormonales.
+
+**Sin embargo, no existe una fórmula que combine todos estos datos y nos permita saber de manera objetiva el riesgo que tiene una persona de padecer obesidad y ENT.**
+
+## Definición del problema y objetivo del estudio:
+
+**Determinar, a partir de medidas antropométricas, el grado de riesgo que corre una persona de padecer obesidad y/o ENT.** 
+
+Se trata de determinar la variable **obesity** que indica 3 grados de riesgo:
+
+1. Riesgo bajo o nulo (0)
+2. Riesgo medio (1)
+3. Riesgo alto (2)
+
+a partir de la edad, el género, el peso, la estatura, el contorno de cintura y el contorno de cadera de una persona.
+
+La variable objetivo no se encuentra dentro del conjunto de datos. 
+
+Con los datos existentes, es posible calcular indicadores definidos más arriba y que permiten determinar el grado de riesgo. Sin embargo, no existe una fórmula o algún criterio objetivo que permita calcular el riesgo tomando en cuenta todas estas medidas.
+
+El objetivo es usar modelos de ML para:
+
+1. Identificar grupos de personas con características similares (clasificación no supervisada) y poderlas etiquetar (asignación manual de la variable objetivo).
+2. A partir de los datos etiquetados, entrenar un modelo de clasificación supervisada que permita predecir el grado de riesgo.
     
-
-## Objetivos académicos:
-
-    - Estudiar un caso real, con datos reales y cuyo resultado pueda ayudar a alguien a resolver un problema. 
-    - Demostrar que la ciencia de datos puede ayudar a cualquier empresa, incluso PYMES.
-    - Conocer y practicar el uso de herramientas de ciencia de datos.
     
-    
-## Fuentes de datos:
+## Fuente de los datos:
 
-Los datos provienen de reportes sacados del software de gestión de la empresa. Se trata de archivos .xls que contienen sólo los datos de reportes sobre facturas (2020), ventas por producto (2021 y 2022) e inventario a la fecha.
+#### Fuente principal:
 
-También se utilizan los datos del [histórico de la tasa de cambio del dólar](https://monitordolarvenezuela.com/historial#2a) que se obtiene a través de un [scraper](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB5_scraper_tasa_dolar.ipynb).
+Existen muchos datasets de datos antropométricos. Sin embargo, este me pareció el más pertinente por la cantidad y variedad de la información:
 
-Más detalles de los archivos utilizados, en el [NB1: Carga y limpieza de los Datos](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB1_analisis_ventas_load.ipynb)
+https://www.kaggle.com/datasets/thedevastator/3-d-anthropometry-measurements-of-human-body-sur?select=caesar.csv
+
+**Créditos:** Andy R. Terrel: https://data.world/andy
+
+#### Subconjunto de datos utilizados en el estudio:
+
+- **age:**  Edad
+- **age_range:**  Rango de edad. Variable categórica
+- **gender:**  Sexo (male, female). Variable categórica
+- **height:**  Altura (en pulgadas)
+- **hip_circum:**  Contorno de cadera (en pulgadas)
+- **weight:**  Peso (en libras)
+- **waist_circum_preferred:**  Contorno de cintura (en pulgadas)
+
+Aquí una descripción completa del dataset: [Metadatos](https://github.com/dchaconoca/antropometria-notebooks/blob/61f5aa8bf92dce0f3d48a3fd3853d57992d6ba90/notebooks/Metadatos.ipynb)
+
+## Enfoque técnico para la realización del estudio:
+
+Pasos generales que seguí para llevar a cabo el estudio:
+
+    - Buscar y seleccionar un subconjunto de datos o medidas antropométricas pertinentes para el estudio.
+    - Calcular indicadores que permiten determinar el riesgo de padecer obecidad o ENT.
+    - Utilizar modelos de clasificación no supervisada para encontrar grupos y así etiquetar los datos.
+    - Seleccionar el mejor modelo de ML para predecir el riesgo de que una persona pueda sufrir de obesidad o ENT
+    - Implementar un prototipo de aplicación que permita a cualquier persona, conocer el grado de riesgo de padecer obesidad o ENT.
 
 
 ## Notebooks del Estudio:
@@ -46,9 +83,23 @@ Más detalles de los archivos utilizados, en el [NB1: Carga y limpieza de los Da
 1. [NB5: Scraper Tasa de Cambio Dólar](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB5_scraper_tasa_dolar.ipynb)
 
 
-## Reporte de Análisis de Ventas:
+## Implementación del prototipo de la aplicación:
 
-1. [Reporte en Google Data Studio](https://datastudio.google.com/reporting/a4e9910d-447d-417a-80a9-a1e5ae4a4b22)
+A partir de los datos que el usuario introduce, la aplicación (hecha utilizando Streamlit) consulta una API (desarrollada con FastAPI) que carga el modelo de ML entrenado, y devuelve:
+
+1. Indicadores y sus índices de riesgo: Índice de masa corporal, contorno de cintura, racio entre cintura y cadera, racio entre cintura y estatura.
+2. Ińdice de riesgo predicho por el modelo: Riesgo bajo o nulo, riesgo medio, riesgo alto.
+
+#### [dIAna antropometría y obesidad](https://diana-antropometria.streamlit.app/)
+
+[Repostitorio GitHub](https://github.com/dchaconoca/antropometria-app)
+
+**Nota:** Los resultados NO deben tomarse como la opinión de un especialista. Esto es un simple ejercicio de ciencia de datos.
+
+
+![Prototipo-dIAna.png](attachment:Prototipo-dIAna.png)
+
+![](./images/Prototipo-dIAna.png)
 
 ## Instrucciones para la ejecución del proyecto:
 
