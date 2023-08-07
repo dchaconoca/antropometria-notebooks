@@ -76,10 +76,10 @@ def num_var_correl(df, col):
 # Gráfico relación entre una variable dada y cada variable categórica
 
 def distribution_var_categ(df, col, invert=False):
-    fig, axes = plt.subplots(nrows=5, ncols=3, figsize=(12, 10))
+    fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(12, 10))
     axes = axes.flat
     if invert:
-        object_cols = df.select_dtypes(include=['float64', 'int']).columns
+        object_cols = df.select_dtypes(include=['float64']).columns
     else:
         object_cols = df.select_dtypes(include=['object']).columns
     

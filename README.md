@@ -76,12 +76,13 @@ Pasos generales que seguí para llevar a cabo el estudio:
 
 ## Notebooks del Estudio:
 
-1. [NB1: Carga y limpieza de los Datos](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB1_analisis_ventas_load.ipynb)
-1. [NB2: EDA y Visualización de los Datos](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB2_analisis_ventas_eda.ipynb)
-1. [NB3: Reporte Análisis de Ventas](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB3_analisis_ventas_reporte.ipynb)
-1. [NB4: Predicción de Ventas - Estudio de una Serie Temporal](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB4_prediccion_ventas.ipynb)
-1. [NB5: Scraper Tasa de Cambio Dólar](https://github.com/dchaconoca/proyecto-ventas/blob/master/NB5_scraper_tasa_dolar.ipynb)
+1. [NB1: Lectura, limpieza, transformación y cálculo de nuevas variables](https://github.com/dchaconoca/antropometria-notebooks/blob/b002232e5f476a3536d7ead00225f1d376edc010/notebooks/01-obesity-load.ipynb): Carga, limpieza y transformación de los datos. Cálculo de nuevas variables necesarias al estudio. Almacenamiento de los datos en archivo .parquet para el resto del estudio.
+1. [NB2: EDA y Visualización de los Datos](https://github.com/dchaconoca/antropometria-notebooks/blob/b002232e5f476a3536d7ead00225f1d376edc010/notebooks/02-obesity-eda.ipynb): Exploración y análisis de los datos.
+1. [NB3: Clasificación no supervisada y etiquetado de los datos](https://github.com/dchaconoca/antropometria-notebooks/blob/b002232e5f476a3536d7ead00225f1d376edc010/notebooks/03-obesity-eda-clusters.ipynb): Clasificación y etiquetado de los datos. Análisis de los clusters. Análisis de la etiqueta.
+1. [NB4: Entrenamiento del modelo](https://github.com/dchaconoca/antropometria-notebooks/blob/b002232e5f476a3536d7ead00225f1d376edc010/notebooks/04-obesity-train-model.ipynb): Escogencia del modelo. Ajuste del modelo. Salvaguarda del modelo entrenado. Predicciones.
 
+
+[Repostitorio GitHub](https://github.com/dchaconoca/antropometria-notebooks.git)
 
 ## Implementación del prototipo de la aplicación:
 
@@ -99,11 +100,22 @@ A partir de los datos que el usuario introduce, la aplicación (hecha utilizando
 
 ![Prototipo-dIAna.png](attachment:Prototipo-dIAna.png)
 
-![](./images/Prototipo-dIAna.png)
 
 ## Instrucciones para la ejecución del proyecto:
 
-1. Debe ejecutarse primero el NB1 que se encarga de cargar los datos brutos (raw). Los archivos con los datos se encuentran en el subdirectorio **datos/in**
-2. En el mismo subdirectorio, también se encuentra el archivo **tasa_dolar.csv** que contiene el histórico de las tasas de cambio del día hasta el 01/03/2022. Si este archivo no está presente, puede ejecutarse el NB5
-3. Una vez ejecutado el NB1, obtendremos en el subdirectorio **datos/out** todos los archivos con los datos necesarios para la ejecución de los notebooks NB2, NB3 y NB4. La ejecución de cada notebook es independiente
+Ejecutar los workflows definidos al final de los notebooks en el siguiente orden:
+
+**Para limpiar, transformar, etiquetar los datos y entrenar el modelo:
+
+1. **NB-01:** Función **load_clean_transform**
+2. **NB-03:** Función **label_data**
+3. **NB-04:** Función **save_model**
+
+**Para hacer predicciones:**
+
+1. **NB-04:** Función **make_obesity_prediction**
+
+También es posible probar la implementación de la aplicación:
+
+### Probar la aplicación [dIAna antropometría y obesidad](https://diana-antropometria.streamlit.app/)
     
