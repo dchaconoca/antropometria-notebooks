@@ -25,6 +25,8 @@ def read_file(file, sep=','):
     df = pd.DataFrame()
       
     file_type = file[file.index('.') - len(file) + 1:]
+    
+    print(file_type)
        
     if (file_type == 'csv'):
         df = pd.read_csv(file, sep=sep)
