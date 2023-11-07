@@ -1,4 +1,4 @@
-# # Estudio de las Medidas Antropométricas para determinar el riesgo de obesidad y ENT
+# Estudio de las Medidas Antropométricas para determinar el riesgo de obesidad y ENT
 
 >Autora: Diana Chacón Ocariz
 
